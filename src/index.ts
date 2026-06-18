@@ -1,36 +1,19 @@
-import { type ModelMessage, streamText } from "ai"
+import { stdin, stdout } from "node:process"
+import readline from "node:readline/promises"
 import "dotenv/config"
-import * as readline from "node:readline/promises"
-import { nim } from "./llm/provider.js"
 
-const terminal = readline.createInterface({
-	input: process.stdin,
-	output: process.stdout,
+import { agent } from "./runtime/agent.js"
+
+const rl = readline.createInterface({
+	input: stdin,
+	output: stdout,
 })
 
-const messages: ModelMessage[] = []
+const prompt = await rl.question("> ")
 
-async function main() {
-	while (true) {
-		const userInput = await terminal.question("You: ")
+const result = await agent(prompt)
 
-		messages.push({ role: "user", content: userInput })
+console.log("\n")
+console.log(result.text)
 
-		const result = streamText({
-			model: nim.chatModel("stepfun-ai/step-3.7-flash"),
-			messages,
-		})
-
-		let fullResponse = ""
-		process.stdout.write("\nAssistant: ")
-		for await (const delta of result.textStream) {
-			fullResponse += delta
-			process.stdout.write(delta)
-		}
-		process.stdout.write("\n\n")
-
-		messages.push({ role: "assistant", content: fullResponse })
-	}
-}
-
-main().catch(console.error)
+rl.close()
