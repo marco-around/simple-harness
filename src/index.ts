@@ -2,7 +2,9 @@ import { stdin, stdout } from "node:process"
 import readline from "node:readline/promises"
 import "dotenv/config"
 
-import { agent } from "./runtime/agent.js"
+import { agent, type Mode } from "./runtime/agent.js"
+
+const MODE: Mode = "plan"
 
 const rl = readline.createInterface({
 	input: stdin,
@@ -11,7 +13,7 @@ const rl = readline.createInterface({
 
 const prompt = await rl.question("> ")
 
-const result = await agent(prompt)
+const result = await agent(prompt, MODE)
 
 console.log("\n")
 console.log(result.text)

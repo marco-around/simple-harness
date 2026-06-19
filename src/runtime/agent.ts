@@ -1,21 +1,16 @@
 import { generateText, type ModelMessage, stepCountIs } from "ai"
 import { nim } from "../llm/provider.js"
-import { tools } from "../tools/index.js"
+import { BUILD_SYSTEM_PROMPT, PLAN_SYSTEM_PROMPT } from "../prompts/system.js"
+import { allTools, readOnlyTools } from "../tools/index.js"
 
 const INTERACTIONS_LIMIT = 25
 
-const SYSTEM_PROMPT = `
-You are a software engineer agent.
+export type Mode = "plan" | "build"
 
-Rules:
+export async function agent(prompt: string, mode: Mode) {
+	const tools = mode === "plan" ? readOnlyTools : allTools
+	const system = mode === "plan" ? PLAN_SYSTEM_PROMPT : BUILD_SYSTEM_PROMPT
 
-- Read files before editing them
-- Prefer minimal changes
-- Run tests when possible
-- Never assume file contents
-`
-
-export async function agent(prompt: string) {
 	const messages: ModelMessage[] = [
 		{
 			role: "user",
@@ -26,7 +21,7 @@ export async function agent(prompt: string) {
 	const result = await generateText({
 		model: nim.chatModel("stepfun-ai/step-3.7-flash"),
 		tools,
-		system: SYSTEM_PROMPT,
+		system,
 		messages,
 		stopWhen: stepCountIs(INTERACTIONS_LIMIT),
 	})

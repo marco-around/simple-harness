@@ -3,9 +3,14 @@ import { readFile } from "./read-file.js"
 import { runCommand } from "./run-command.js"
 import { writeFile } from "./write-file.js"
 
-export const tools = {
-	listFiles,
+export const readOnlyTools = {
 	readFile,
-	runCommand,
+	listFiles,
+}
+
+export const allTools = {
+	readFile,
+	listFiles,
 	writeFile,
+	runCommand,
 }
