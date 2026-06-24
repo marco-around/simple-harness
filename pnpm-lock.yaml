@@ -20,6 +20,12 @@ importers:
       ink:
         specifier: ^7.1.0
         version: 7.1.0(@types/react@19.2.17)(react@19.2.7)
+      ink-spinner:
+        specifier: ^5.0.0
+        version: 5.0.0(ink@7.1.0(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)
+      ink-text-input:
+        specifier: ^6.0.0
+        version: 6.0.0(ink@7.1.0(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)
       react:
         specifier: ^19.2.7
         version: 19.2.7
@@ -335,6 +341,10 @@ packages:
     resolution: {integrity: sha512-VGtlMu3x/4DOtIUwEkRezxUZ2lBacNJCHash0N0WeZDBS+7Ux1dm3XWAgWYxLJFMMdOeXMHXorshEFhbMSGelg==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
+  cli-spinners@2.9.2:
+    resolution: {integrity: sha512-ywqV+5MmyL4E7ybXgKys4DugZbX0FC6LnwrhjuykIjnK9k8OQacQ7axGKnjDXWNhns0xot3bZI5h55H8yo9cJg==}
+    engines: {node: '>=6'}
+
   cli-truncate@6.0.0:
     resolution: {integrity: sha512-3+YKIUFsohD9MIoOFPFBldjAlnfCmCDcqe6aYGFqlDTRKg80p4wg35L+j83QQ63iOlKRccEkbn8IuM++HsgEjA==}
     engines: {node: '>=22'}
@@ -386,6 +396,20 @@ packages:
   indent-string@5.0.0:
     resolution: {integrity: sha512-m6FAo/spmsW2Ab2fU35JTYwtOKa2yAwXSwgjSv1TJzh4Mh7mC3lzAOVLBprb72XsTrgkEIsl7YrFNAiDiRhIGg==}
     engines: {node: '>=12'}
+
+  ink-spinner@5.0.0:
+    resolution: {integrity: sha512-EYEasbEjkqLGyPOUc8hBJZNuC5GvXGMLu0w5gdTNskPc7Izc5vO3tdQEYnzvshucyGCBXc86ig0ujXPMWaQCdA==}
+    engines: {node: '>=14.16'}
+    peerDependencies:
+      ink: '>=4.0.0'
+      react: '>=18.0.0'
+
+  ink-text-input@6.0.0:
+    resolution: {integrity: sha512-Fw64n7Yha5deb1rHY137zHTAbSTNelUKuB5Kkk2HACXEtwIHBCf9OH2tP/LQ9fRYTl1F0dZgbW0zPnZk6FA9Lw==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      ink: '>=5'
+      react: '>=18'
 
   ink@7.1.0:
     resolution: {integrity: sha512-VWE6/yeLtFCJBNLflyI2OSylyXK1Rc24LuXup8Qt+icwkmmycFNdbn8IkSp6Frc0h1iA0NOvvi1ajW44U/w3Qg==}
@@ -472,6 +496,10 @@ packages:
     resolution: {integrity: sha512-X8EX+XV4QR5xCsrgxaED954zTDfY8KqlDtskKEL0cHhyS/P8b4IFOvGDQpsC9Q1XnLq915wEfwwY/zzskCtmhg==}
     engines: {node: '>=18.0.0'}
     hasBin: true
+
+  type-fest@4.41.0:
+    resolution: {integrity: sha512-TeTSQ6H5YHvpqVwBRcnLDCBnDOHWYu7IvGbHT6N8AOymcr9PJGjc1GTtiWZTYg0NCgYwvnYWEkVChQAr9bjfwA==}
+    engines: {node: '>=16'}
 
   type-fest@5.7.0:
     resolution: {integrity: sha512-1URUxUqfHFM1c+zfSPsa3gnkO7Aq21qyH75SIduNYz4SzY964rn1X2vCMQaHSHhktiw+0kPa2iyb6PUpXqB6Vg==}
@@ -695,6 +723,8 @@ snapshots:
     dependencies:
       restore-cursor: 4.0.0
 
+  cli-spinners@2.9.2: {}
+
   cli-truncate@6.0.0:
     dependencies:
       slice-ansi: 9.0.0
@@ -753,6 +783,19 @@ snapshots:
   get-east-asian-width@1.6.0: {}
 
   indent-string@5.0.0: {}
+
+  ink-spinner@5.0.0(ink@7.1.0(@types/react@19.2.17)(react@19.2.7))(react@19.2.7):
+    dependencies:
+      cli-spinners: 2.9.2
+      ink: 7.1.0(@types/react@19.2.17)(react@19.2.7)
+      react: 19.2.7
+
+  ink-text-input@6.0.0(ink@7.1.0(@types/react@19.2.17)(react@19.2.7))(react@19.2.7):
+    dependencies:
+      chalk: 5.6.2
+      ink: 7.1.0(@types/react@19.2.17)(react@19.2.7)
+      react: 19.2.7
+      type-fest: 4.41.0
 
   ink@7.1.0(@types/react@19.2.17)(react@19.2.7):
     dependencies:
@@ -847,6 +890,8 @@ snapshots:
       esbuild: 0.28.1
     optionalDependencies:
       fsevents: 2.3.3
+
+  type-fest@4.41.0: {}
 
   type-fest@5.7.0:
     dependencies:
