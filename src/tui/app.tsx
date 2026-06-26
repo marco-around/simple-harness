@@ -1,73 +1,78 @@
 import "react"
 import { Box, Text, useInput } from "ink"
 import Spinner from "ink-spinner"
-
-import { useState } from "react"
-
-import { agent } from "../runtime/agent.js"
+import { ApprovalPrompt } from "./components/approval-prompt.js"
+import { MessageList } from "./components/message-list.js"
+import { Panel } from "./components/panel.js"
 import { PromptInput } from "./components/prompt-input.js"
 import { Separator } from "./components/separator.js"
+import { useAgent } from "./hooks/use-agent.js"
+import { formatToolCall } from "./utils/describe-tool-call.js"
 
 export function App() {
-	const [output, setOutput] = useState("")
-	const [mode, setMode] = useState<"plan" | "build">("build")
-	const [isLoading, setIsLoading] = useState(false)
+	const { states, actions } = useAgent()
+	const { chatMessages, mode, plan, agentStatusText, isLoading, isApproved } =
+		states
 
 	const colorMode = mode === "build" ? "#8e51ff" : "#efb100"
 	const textMode = mode === "build" ? "Build" : "Plan"
 
-	async function handlePromptSubmit(prompt: string) {
-		if (!prompt) return
+	useInput((input, key) => {
+		if (key.tab && !isLoading && !isApproved) {
+			actions.setMode((prev) => (prev === "plan" ? "build" : "plan"))
+		}
 
-		setIsLoading(true)
-
-		const result = await agent(prompt, mode)
-
-		setOutput(result.text)
-		setIsLoading(false)
-	}
-
-	useInput((_, key) => {
-		if (key.tab) {
-			setMode((prev) => (prev === "plan" ? "build" : "plan"))
+		if (key.ctrl && input === "p") {
+			if (plan && !isLoading && !isApproved) {
+				actions.setMode("build")
+				actions.handlePromptSubmit("Execute the proposed plan.", "build")
+			}
 		}
 	})
 
+	const showInput = !isLoading && !isApproved
+
 	return (
 		<Box flexDirection="column" gap={1}>
-			<Box borderStyle="round" borderColor="#8e51ff" alignSelf="flex-start">
-				<Box flexDirection="column" alignItems="center" padding={1}>
-					<Text bold>Welcome to Simple Harness!</Text>
-
-					<Text color="#8e51ff" dimColor>{`
-▀▄   ▄▀
- ▄█▀███▀█▄
-█▀███████▀█
-█ █▀▀▀▀▀█ █
-  ▀▀   ▀▀`}</Text>
-
-					<Text color="gray">Step-3.7-flash</Text>
-					<Text color="gray">Agent based Harness</Text>
-				</Box>
-			</Box>
+			<Panel />
 
 			<Separator title="Make your tests here!" char="=" padding={0} />
 
-			<Box flexDirection="column">
-				<Box borderStyle="round" borderColor="gray" paddingX={1}>
-					<PromptInput onSubmit={handlePromptSubmit} />
-				</Box>
+			<MessageList entries={chatMessages} />
 
+			{isLoading && (
 				<Box gap={1}>
-					<Text color="gray">Mode:</Text>
-					<Text color={colorMode}>{textMode}</Text>
-					<Text color="gray">(tab for change mode)</Text>
+					<Spinner />
+					<Text dimColor>{agentStatusText}</Text>
 				</Box>
-			</Box>
+			)}
 
-			{isLoading && <Spinner />}
+			{isApproved && (
+				<ApprovalPrompt
+					description={formatToolCall(
+						isApproved.current.toolName,
+						isApproved.current.toolInput
+					)}
+					onApprove={actions.handleApprovalResolve}
+				/>
+			)}
 
-			<Text dimColor>{output}</Text>
+			{showInput && (
+				<Box flexDirection="column">
+					<Box borderStyle="round" borderColor="gray" paddingX={1}>
+						<PromptInput onSubmit={actions.handlePromptSubmit} />
+					</Box>
+
+					<Box gap={1}>
+						<Text color="gray">Mode:</Text>
+						<Text color={colorMode}>{textMode}</Text>
+						<Text color="gray">(tab for change mode)</Text>
+						{plan && (
+							<Text color="green"> [Plan Active: ctrl+p to proceed]</Text>
+						)}
+					</Box>
+				</Box>
+			)}
 		</Box>
 	)
 }

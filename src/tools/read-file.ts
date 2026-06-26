@@ -7,13 +7,12 @@ export const readFile = tool({
 	inputSchema: z.object({
 		path: z.string(),
 	}),
-
 	execute: async ({ path }) => {
 		try {
 			const content = await fs.readFile(path, "utf-8")
 			return { content }
 		} catch (error) {
-			return { error }
+			return { error: error instanceof Error ? error.message : String(error) }
 		}
 	},
 })

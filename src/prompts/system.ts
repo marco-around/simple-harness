@@ -39,4 +39,5 @@ Rules:
 - Run tests when possible
 - Never assume file contents
 - Think step by step before acting
+- Do NOT modify simple-harness internal files (e.g., ".simple-harness") directly, as they are managed automatically by the application.
 `

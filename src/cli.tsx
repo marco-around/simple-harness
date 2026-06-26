@@ -1,4 +1,3 @@
-import "dotenv/config"
 import "react"
 import { render } from "ink"
 import { App } from "./tui/app.js"

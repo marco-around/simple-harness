@@ -5,7 +5,7 @@
 	"main": "src/cli.tsx",
 	"type": "module",
 	"scripts": {
-		"dev": "tsx src/cli.tsx"
+		"dev": "tsx --env-file=.env src/cli.tsx"
 	},
 	"keywords": [
 		"typescript",
@@ -28,7 +28,6 @@
 	"dependencies": {
 		"@ai-sdk/openai-compatible": "^2.0.51",
 		"ai": "^6.0.208",
-		"dotenv": "^17.4.2",
 		"ink": "^7.1.0",
 		"ink-spinner": "^5.0.0",
 		"ink-text-input": "^6.0.0",

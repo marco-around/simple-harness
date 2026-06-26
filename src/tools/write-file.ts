@@ -4,6 +4,7 @@ import z from "zod"
 
 export const writeFile = tool({
 	description: "Writes a file at the given path",
+	needsApproval: true,
 	inputSchema: z.object({
 		path: z.string(),
 		content: z.string(),
@@ -18,7 +19,7 @@ export const writeFile = tool({
 				message: "file written successfully",
 			}
 		} catch (error) {
-			return { error }
+			return { error: error instanceof Error ? error.message : String(error) }
 		}
 	},
 })

@@ -12,7 +12,7 @@ export const listFiles = tool({
 			const files = await fs.readdir(path)
 			return { files }
 		} catch (error) {
-			return { error }
+			return { error: error instanceof Error ? error.message : String(error) }
 		}
 	},
 })

@@ -7,10 +7,10 @@ const execAsync = promisify(exec)
 
 export const runCommand = tool({
 	description: "Runs a command in the terminal",
+	needsApproval: true,
 	inputSchema: z.object({
 		command: z.string(),
 	}),
-
 	execute: async ({ command }) => {
 		try {
 			const { stdout, stderr } = await execAsync(command)
@@ -20,7 +20,7 @@ export const runCommand = tool({
 				stderr,
 			}
 		} catch (error) {
-			return { error }
+			return { error: error instanceof Error ? error.message : String(error) }
 		}
 	},
 })
