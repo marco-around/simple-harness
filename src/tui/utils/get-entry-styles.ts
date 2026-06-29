@@ -1,6 +1,6 @@
-import type { ChatEntry } from "../components/message-list.js"
+import type { ChatMessage } from "../components/message-list.js"
 
-export function getEntryStyles(role: ChatEntry["role"]) {
+export function getEntryStyles(role: ChatMessage["role"]) {
 	if (role === "user") {
 		return { label: "You >", color: "gray" }
 	}
